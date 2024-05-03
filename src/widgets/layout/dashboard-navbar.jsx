@@ -50,7 +50,7 @@ export function DashboardNavbar() {
               fixedNavbar ? "mt-1" : ""
             }`}
           >
-            <Link to={`/${layout}`}>
+            {/* <Link to={`/${layout}`}>
               <Typography
                 variant="small"
                 color="blue-gray"
@@ -58,18 +58,18 @@ export function DashboardNavbar() {
               >
                 {layout}
               </Typography>
-            </Link>
-            <Typography
+            </Link> */}
+            {/* <Typography
               variant="small"
               color="blue-gray"
               className="font-normal"
             >
               {page}
-            </Typography>
+            </Typography> */}
           </Breadcrumbs>
-          <Typography variant="h6" color="blue-gray">
+          {/* <Typography variant="h6" color="blue-gray">
             {page}
-          </Typography>
+          </Typography> */}
         </div>
         <div className="flex items-center">
           {/* <div className="mr-auto md:mr-4 md:w-56">
