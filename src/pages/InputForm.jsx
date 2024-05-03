@@ -108,16 +108,7 @@ export function InputForm() {
     try {
       // Dispatch the action to add user
       await dispatch(addDeposit(Object.fromEntries(formDataToSend)));
-      Swal.fire({
-        icon: 'success',
-        title: 'Data added successfully!',
-        showConfirmButton: false,
-        timer: 2000,
-      }).then(() => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      });
+     
     } catch (error) {
       console.error('Error adding user:', error);
     }
