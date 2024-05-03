@@ -26,7 +26,7 @@ const ModalPut = ({ additional_proof, id }) => {
         toggleModal();
 
         try {
-            const response = await fetch(`http://192.168.127.112:3032/spldeposit/edit/${id}`, {
+            const response = await fetch(`http://${import.meta.env.VITE_API_URL2}/spldeposit/edit/${id}`, {
                 method: 'PUT', // Mengubah metode menjadi PUT
                 headers: {
                     'Content-Type': 'application/json',

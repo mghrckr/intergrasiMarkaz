@@ -36,7 +36,7 @@ const ModalFile = ({ id }) => {
         formDataToSend.append(fileKey, formData[fileKey]);
 
         try {
-            const response = await fetch(`http://192.168.127.112:3032/upload/transferbukti/${id}`, {
+            const response = await fetch(`http://${import.meta.env.VITE_API_URL2}/upload/transferbukti/${id}`, {
                 method: 'POST',
                 body: formDataToSend,
             });

@@ -1,6 +1,6 @@
 const BASE_URL = `http://192.168.127.112:8000`
-const BASE_URL_ACN = `http://192.168.127.112:3032`
-
+const BASE_URL_ACN = `http://${import.meta.env.VITE_API_URL2}`
+import Swal from 'sweetalert2';
 
 
 
@@ -366,8 +366,23 @@ export const addDeposit = (formData) => {
                 body: JSON.stringify(formData),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to add user');
+            // if (!response.ok) {
+            //     throw new Error('Failed to add user');
+            // }
+            if (response.ok) {
+                // Logika jika PUT berhasil
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data added successfully!',
+                    showConfirmButton: false,
+                    timer: 2000,
+                }).then(() => {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                });
+            } else {
+                console.error('PUT request failed');
             }
 
             const data = await response.json();
@@ -541,8 +556,7 @@ export const setPickedBankAwal = (user) => {
 /* integrasi */
 
 
-const BASE_URL_INT = `http://192.168.127.112:2992`
-
+const BASE_URL_INT = `http://${import.meta.env.VITE_API_URL1}`
 // const access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJEQl9OQU1FIjoib3RvbWF4IiwiREJfVVNFUiI6IndlYnVzZXIwMDEiLCJEQl9QQVNTIjoiVyNCdXNlcjAwMSIsIkRCX1NFUlZFUiI6IjE5Mi4xNjguMTI3Ljk0IiwiaWF0IjoxNzAyNDYwNzA1fQ.6cmlI_iPOdxJmYRFGw2q01o354HzncijNDfMBmpAWmk'
 // const access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJEQl9OQU1FIjoibW9ubW9uIiwiREJfVVNFUiI6IndlYnVzZXIwMDEiLCJEQl9QQVNTIjoiVyNCdXNlcjAwMSIsIkRCX1NFUlZFUiI6IjE5Mi4xNjguMTI3Ljk0IiwiaWF0IjoxNzAyNTQ1OTEzfQ.c0oYsfp1IuCR9OQWODQi4fQHw0kPMm8vJyEPnQulzNg'
 

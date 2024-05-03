@@ -34,7 +34,7 @@ export function TablesAntri() {
   }
   const startFormattedDate = convertDateFormat(startDate);
   const endFormattedDate = convertDateFormat(endDate);
-  const BASE_URL_ACN = `http://192.168.127.112:3032`
+  const BASE_URL_ACN = `http://${import.meta.env.VITE_API_URL2}`
 
 
 

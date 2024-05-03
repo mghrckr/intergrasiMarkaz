@@ -10,7 +10,7 @@ import {
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { addDeposit, fetchBanks, fetchSuppliersAcns, fetchUserAcns, setPickedBank, setPickedSupplier, setPickedUser } from '@/store/actionCreators';
-import Swal from 'sweetalert2';
+
 export function InputForm() {
   const [formData, setFormData] = useState({
     user_id: '',
