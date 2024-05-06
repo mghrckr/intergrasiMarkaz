@@ -62,6 +62,9 @@ export function DataKomisi() {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submittedBank, setSubmittedBank] = useState(false);
   const [submitLoadingBank, setSubmitLoadingBank] = useState(false);
+  const [totalNominalSPL, setTotalNominalSPL] = useState(0);
+  const [totalNominalBank, setTotalNominalBank] = useState(0);
+
   const dataTrxSPL = useSelector((state) => state.dataTrxSPL.dataTrxSPL);
   const dataTrxBank = useSelector((state) => state.dataTrxBank.dataTrxBank);
   let storedStartDate = JSON.parse(localStorage.getItem('startLocal'))
@@ -83,6 +86,7 @@ export function DataKomisi() {
   const endFormattedDate = convertDateFormat(endDate);
   const startFormattedDateBank = convertDateFormat(startDateBank);
   const endFormattedDateBank = convertDateFormat(endDateBank);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -129,6 +133,21 @@ export function DataKomisi() {
     dispatch(fetchDataTrxBank(storedStartDateBank, storedEndDatesBank));
   }, [dispatch, storedStartDate, storedEndDates, storedStartDateBank, storedEndDatesBank]);
   console.log(dataTrxBank, 'yoyoyoyoyoyo');
+
+  useEffect(() => {
+    if (dataTrxSPL?.data) {
+      const total = dataTrxSPL.data.reduce((acc, trx) => acc + trx.total_nominal, 0);
+      setTotalNominalSPL(total);
+    }
+  }, [dataTrxSPL]);
+
+  useEffect(() => {
+    if (dataTrxBank?.data) {
+      const total = dataTrxBank.data.reduce((acc, trx) => acc + trx.total_nominal, 0);
+      setTotalNominalBank(total);
+    }
+  }, [dataTrxBank]);
+
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       {/* {JSON.stringify(users.data)} */}
@@ -243,6 +262,27 @@ export function DataKomisi() {
                         </td>
                       </tr>
                     ))}
+                    <tr>
+                      <td className='border-b border-blue-gray-50'>
+                        <Typography className="text-xs font-bold text-blue-gray-600">
+                          TOTAL
+                        </Typography>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                        <Typography className="text-xs font-bold text-blue-gray-600">
+                          Rp. {formatNumber(totalNominalSPL)}
+                        </Typography>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                        <Typography className="text-xs font-bold text-blue-gray-600">
+
+                        </Typography>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </CardBody>
@@ -342,6 +382,27 @@ export function DataKomisi() {
                         </td>
                       </tr>
                     ))}
+                    <tr>
+                      <td className='border-b border-blue-gray-50'>
+                        <Typography className="text-xs font-bold text-blue-gray-600">
+                          TOTAL
+                        </Typography>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                        <Typography className="text-xs font-bold text-blue-gray-600">
+                          Rp. {formatNumber(totalNominalBank)}
+                        </Typography>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                      </td>
+                      <td className='border-b border-blue-gray-50'>
+                        <Typography className="text-xs font-bold text-blue-gray-600">
+
+                        </Typography>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </CardBody>

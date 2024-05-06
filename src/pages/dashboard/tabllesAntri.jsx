@@ -25,6 +25,7 @@ export function TablesAntri() {
   let [endDate, setEndDate] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [totalNominal, setTotalNominal] = useState(0);
   const dataTrxs = useSelector((state) => state.dataTrxs.dataTrxs);
   function convertDateFormat(dateString) {
     // Pisahkan tahun, bulan, dan tanggal
@@ -36,7 +37,12 @@ export function TablesAntri() {
   const endFormattedDate = convertDateFormat(endDate);
   const BASE_URL_ACN = `http://${import.meta.env.VITE_API_URL2}`
 
-
+  const formatNumber = (number) => {
+    if (number === undefined) {
+      return "";
+    }
+    return number.toLocaleString();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,12 +61,13 @@ export function TablesAntri() {
 
   const users = useSelector((state) => state.users.users);
 
-  // useEffect(() => {
-  //   dispatch(fetchUsers());
-  // }, [dispatch]);
-  // console.log(startDate);
-  // console.log(formattedDate);
-  console.log(dataTrxs, 'yahahahahahaha');
+
+  useEffect(() => {
+
+    const total = dataTrxs?.data?.reduce((acc, trx) => acc + trx.nominal, 0);
+    setTotalNominal(total);
+  }, [dataTrxs]);
+  console.log(totalNominal, 'yahahahahahaha');
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       {/* {JSON.stringify(users.data)} */}
@@ -162,7 +169,7 @@ export function TablesAntri() {
                   </td>
                   <td className='border-b border-blue-gray-50'>
                     <Typography className="text-xs font-semibold text-blue-gray-600">
-                      {trx.nominal}
+                      Rp. {formatNumber(trx.nominal)}
                     </Typography>
                   </td>
                   <td className='border-b border-blue-gray-50'>
@@ -172,15 +179,40 @@ export function TablesAntri() {
                   </td>
                   <td className='border-b border-blue-gray-50'>
                     <Typography className="text-xs font-semibold text-blue-gray-600">
-                      {trx.transfer_proof}
+                      {trx.additional_proof}
                     </Typography>
                   </td>
                   <td className='border-b border-blue-gray-50'>
-                    {/* <img src={BASE_URL_ACN + trx.transfer_proof} alt="Preview" className="max-w-xs max-h-40 mb-4 rounded-lg shadow-lg" /> */}
                     <ModalFoto url={BASE_URL_ACN} url2={trx.transfer_proof} />
                   </td>
                 </tr>
               ))}
+              <tr>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    TOTAL
+                  </Typography>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+
+                  </Typography>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    Rp. {formatNumber(totalNominal)}
+                  </Typography>
+                </td>
+              </tr>
             </tbody>
           </table>
         </CardBody>

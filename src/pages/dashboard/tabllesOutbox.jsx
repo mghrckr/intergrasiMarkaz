@@ -27,6 +27,8 @@ export function TablesOutbox() {
   let [endDate, setEndDate] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [totalNominalTop, setTotalNominalTop] = useState(0);
+  const [totalNominalBottom, setTotalNominalBottom] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +44,12 @@ export function TablesOutbox() {
       console.log('kocak');
     }
   };
+  const formatNumber = (number) => {
+    if (number === undefined) {
+      return "";
+    }
+    return number.toLocaleString();
+  };
 
   const users = useSelector((state) => state.users.users);
   const cekPendings = useSelector((state) => state.cekPendings.cekPendings);
@@ -49,8 +57,22 @@ export function TablesOutbox() {
   useEffect(() => {
     dispatch(fetchUsers());
     dispatch(fetchCekPendings())
-  }, [dispatch]);
-  console.log(cekPendings, 'csscscs');
+  }, [dispatch]); console.log(cekPendings, 'csscscs');
+  useEffect(() => {
+    // Hitung total nominal untuk tabel atas
+    const totalTop = cekPendings?.data
+      ?.filter((pending) => pending.status === 'pending')
+      .reduce((acc, curr) => acc + curr.nominal, 0);
+    setTotalNominalTop(totalTop);
+
+    // Hitung total nominal untuk tabel bawah
+    const totalBottom = cekPendings?.data
+      ?.filter((pending) => pending.status !== 'pending' && pending.additional_proof === null)
+      .reduce((acc, curr) => acc + curr.nominal, 0);
+    setTotalNominalBottom(totalBottom);
+  }, [cekPendings]);
+
+  console.log(totalNominalTop, totalNominalBottom, 'top', 'bot');
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       {/* {JSON.stringify(users.data)} */}
@@ -121,7 +143,7 @@ export function TablesOutbox() {
                     </td>
                     <td className='border-b border-blue-gray-50'>
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {pending.nominal}
+                        Rp. {formatNumber(pending.nominal)}
                       </Typography>
                     </td>
                     <td className='border-b border-blue-gray-50'>
@@ -139,6 +161,25 @@ export function TablesOutbox() {
                     </td>
                   </tr>
                 ))}
+              <tr>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    TOTAL
+                  </Typography>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    Rp. {formatNumber(totalNominalTop)}
+                  </Typography>
+                </td>
+              </tr>
             </tbody>
           </table>
           <Typography variant="h6" color="black">
@@ -195,7 +236,7 @@ export function TablesOutbox() {
                     </td>
                     <td className='border-b border-blue-gray-50'>
                       <Typography className="text-xs font-semibold text-blue-gray-600">
-                        {pending.nominal}
+                        Rp. {formatNumber(pending.nominal)}
                       </Typography>
                     </td>
                     <td className='border-b border-blue-gray-50'>
@@ -213,6 +254,25 @@ export function TablesOutbox() {
                     </td>
                   </tr>
                 ))}
+              <tr>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    TOTAL
+                  </Typography>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    Rp. {formatNumber(totalNominalBottom)}
+                  </Typography>
+                </td>
+              </tr>
             </tbody>
           </table>
         </CardBody>

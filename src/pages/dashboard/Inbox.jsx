@@ -27,6 +27,7 @@ export function Inbox() {
   const [submitted, setSubmitted] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const formatNumber = (number) => {
     if (number === undefined) {
@@ -67,7 +68,14 @@ export function Inbox() {
     dispatch(fetchUsers());
     dispatch(fetchDataSupplier())
   }, [dispatch]);
-  console.log(dataSupplier, 'wkwkwkwkwkwk');
+  useEffect(() => {
+    // Hitung total balance setiap kali dataSupplier berubah
+    if (dataSupplier && dataSupplier.data) {
+      const total = dataSupplier.data.reduce((acc, curr) => acc + curr.balance, 0);
+      setTotalBalance(total);
+    }
+  }, [dataSupplier]);
+  console.log(totalBalance, 'wkwkwkwkwkwk');
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       {/* {JSON.stringify(users.data)} */}
@@ -252,7 +260,7 @@ export function Inbox() {
                   </td>
                   <td className='border-b border-blue-gray-50'>
                     <Typography className="text-xs font-semibold text-blue-gray-600">
-                      {formatNumber(supp.balance)}
+                      Rp. {formatNumber(supp.balance)}
                     </Typography>
                   </td>
                   <td className='border-b border-blue-gray-50'>
@@ -261,14 +269,24 @@ export function Inbox() {
                     </span>
                   </td>
                   <SupplierStatusCheckbox id={supp.id} status={supp.status} />
-                  {/* <td className='border-b border-blue-gray-50'>
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input type="checkbox" defaultValue="" className="sr-only peer" />
-                      <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600" />
-                    </label>
-                  </td> */}
                 </tr>
               ))}
+              <tr>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    TOTAL
+                  </Typography>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                  <Typography className="text-xs font-bold text-blue-gray-600">
+                    Rp. {formatNumber(totalBalance)}
+                  </Typography>
+                </td>
+                <td className='border-b border-blue-gray-50'>
+                </td>
+              </tr>
             </tbody>
           </table>
         </CardBody>
